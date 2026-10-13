@@ -1,0 +1,22 @@
+# DSP_Prok — Strictly Pinned Production & Testing Dependencies
+# Target Python Version: 3.12.x (Verified on Python 3.12.4 64-bit Windows)
+
+# Core Web Framework & Data Validation
+fastapi==0.140.13
+uvicorn==0.51.0
+pydantic==2.9.2
+
+# Scientific Computing & Model Inference Stack
+numpy==2.1.1
+scipy==1.18.1
+scikit-learn==1.9.0
+joblib==1.5.3
+pandas==2.2.3
+
+# Quantitative Stylometry & Readability
+textstat==0.7.13
+
+# End-to-End Testing & Browser Verification
+pytest==9.1.1
+httpx==0.28.1
+websockets==16.1.1

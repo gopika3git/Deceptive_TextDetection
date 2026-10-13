@@ -1,0 +1,13 @@
+exp_id,name,description,feat_type,C,class_weight,cv_mean_acc,cv_mean_bal_acc,cv_mean_macro_f1,cv_std_macro_f1,val_svm_acc,val_svm_bal_acc,val_svm_macro_f1,val_cal_acc,val_cal_macro_f1,val_cal_auc,val_cal_brier
+1,Exp_01_Baseline_Combined_C0.15,"Baseline: Word(1-2)+Char(3-5), LinearSVC(C=0.15), class_weight=None",combined,0.15,None,0.6086,0.6085,0.6083,0.0174,0.6127,0.6128,0.6127,0.6244,0.6244,0.66,0.2337
+2,Exp_02_Word_Only_C0.15,"Ablation: Word(1-2) Only, LinearSVC(C=0.15)",word_only,0.15,None,0.6169,0.6168,0.6166,0.0139,0.623,0.6231,0.623,0.6318,0.6315,0.6571,0.2347
+3,Exp_03_Char_Only_C0.15,"Ablation: Char(3-5) Only, LinearSVC(C=0.15)",char_only,0.15,None,0.5961,0.5961,0.5958,0.0141,0.6215,0.6216,0.6215,0.62,0.6199,0.6557,0.2339
+4,Exp_04_Word_Unigram_Char_C0.15,"Variant: Word(1-1) Unigram + Char(3-5), LinearSVC(C=0.15)",combined,0.15,None,0.6078,0.6078,0.6075,0.0154,0.6303,0.6303,0.6303,0.623,0.6228,0.6566,0.2349
+5,Exp_05_Combined_C0.01,"Regularization: Combined, LinearSVC(C=0.01) [High Regularization]",combined,0.01,None,0.6002,0.5998,0.5992,0.0098,0.6436,0.6427,0.6424,0.6377,0.6374,0.6669,0.2327
+6,Exp_06_Combined_C0.05,"Regularization: Combined, LinearSVC(C=0.05)",combined,0.05,None,0.6161,0.616,0.6157,0.0122,0.6333,0.6333,0.6332,0.6318,0.6317,0.6685,0.2322
+7,Exp_07_Combined_C0.10,"Regularization: Combined, LinearSVC(C=0.10)",combined,0.1,None,0.6096,0.6096,0.6093,0.0152,0.6244,0.6245,0.6244,0.6318,0.6317,0.665,0.2329
+8,Exp_08_Combined_C0.25,"Regularization: Combined, LinearSVC(C=0.25)",combined,0.25,None,0.6053,0.6052,0.6049,0.0165,0.6024,0.6023,0.6023,0.6127,0.6124,0.6536,0.2348
+9,Exp_09_Combined_C0.50,"Regularization: Combined, LinearSVC(C=0.50)",combined,0.5,None,0.5998,0.5998,0.5996,0.0197,0.5876,0.5878,0.5876,0.6038,0.6036,0.6447,0.2365
+10,Exp_10_Combined_C1.00,"Regularization: Combined, LinearSVC(C=1.00) [Low Regularization]",combined,1.0,None,0.5928,0.5927,0.5924,0.0203,0.5965,0.5965,0.5964,0.5965,0.5961,0.6357,0.2379
+11,Exp_11_Combined_Balanced_C0.15,"Class Weight: Combined, LinearSVC(C=0.15, class_weight='balanced')",combined,0.15,balanced,0.6086,0.6086,0.6084,0.0173,0.6156,0.6158,0.6156,0.62,0.6199,0.6602,0.2336
+12,Exp_12_Combined_NoSublinear_C0.15,"TF-IDF Scaling: Combined, sublinear_tf=False, LinearSVC(C=0.15)",combined,0.15,None,0.6092,0.6092,0.6089,0.015,0.6112,0.6112,0.6112,0.6186,0.6184,0.6596,0.2338

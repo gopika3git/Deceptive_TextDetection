@@ -1,0 +1,38 @@
+{
+  "hotel_review": {
+    "display_name": "Hotel Reviews",
+    "description": "Customer hotel accommodation reviews and opinions",
+    "validation_status": "Validated (Ott et al. 2011, 2013 gold standard)",
+    "intended_use": "Research & Decision Support"
+  },
+  "product_review": {
+    "display_name": "Product Reviews",
+    "description": "E-commerce product reviews and consumer feedback",
+    "validation_status": "Supported / Extensible pipeline",
+    "intended_use": "Research & Decision Support"
+  },
+  "email_message": {
+    "display_name": "Emails & Written Messages",
+    "description": "Interpersonal and professional correspondence",
+    "validation_status": "Supported / Extensible pipeline",
+    "intended_use": "Research & Decision Support"
+  },
+  "social_comment": {
+    "display_name": "Social Media Posts & Comments",
+    "description": "Online forum, social network, and public discussion comments",
+    "validation_status": "Supported / Extensible pipeline",
+    "intended_use": "Research & Decision Support"
+  },
+  "personal_statement": {
+    "display_name": "Personal Statements & Narratives",
+    "description": "First-person accounts, statements, and essays",
+    "validation_status": "Validated (Pérez-Rosas & Mihalcea 2015 gold standard, 62.55% test acc)",
+    "intended_use": "Research & Decision Support"
+  },
+  "general_text": {
+    "display_name": "General Written Text",
+    "description": "General-purpose written documents and statements",
+    "validation_status": "Supported / Extensible pipeline",
+    "intended_use": "Research & Decision Support"
+  }
+}

@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>General Text Deception Detection & Personal Historical Stylometry</title>
+  <meta name="description" content="Research-grade dual-engine text deception detection combining general multi-domain NLP classification with personal historical writing stylometry.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Ambient background glow accents -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="app-container">
+    <!-- Main Header -->
+    <header class="navbar">
+      <div class="brand">
+        <div class="logo-icon">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <div>
+          <h1>General Text Deception Detection</h1>
+          <span class="sub-brand">Dual-Engine System | Investigative Portal: General Text Classification &amp; Target-Author Stylometric Comparison</span>
+        </div>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button id="tab-engine-a" class="nav-tab active" onclick="switchTab('engine-a')">
+          <span class="tab-badge">Engine A</span> General Classifier
+        </button>
+        <button id="tab-engine-b" class="nav-tab" onclick="switchTab('engine-b')">
+          <span class="tab-badge">Engine B</span> Target-Author Stylometry
+        </button>
+        <button id="tab-combined" class="nav-tab" onclick="switchTab('combined')">
+          <span class="tab-badge">Synthesis</span> Combined Report
+        </button>
+        <button id="tab-metrics" class="nav-tab" onclick="switchTab('metrics')">
+          Metrics & Privacy
+        </button>
+      </nav>
+
+      <div class="nav-header-actions" style="display:flex; align-items:center; gap:0.75rem;">
+        <button id="btn-header-onboard" class="btn btn-primary btn-sm" onclick="openOnboardingWizard()" title="Set Up Target Author Baseline">
+          <span style="margin-right:4px;">🎯</span> Set Up Target Author
+        </button>
+        <div class="badge-status">
+          <span class="status-dot"></span>
+          <span id="model-status-text">Dual Engines Active</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main>
+
+      <!-- ==================== TAB 1: ENGINE A (GENERAL CLASSIFICATION) ==================== -->
+      <section id="section-engine-a" class="tab-content active">
+        <div class="grid-layout">
+          <!-- Input Card -->
+          <div class="card glass-card input-card">
+            <div class="card-header">
+              <div>
+                <h2>Engine A: General Text Classifier</h2>
+                <p class="card-desc">Classifies text based on resemblance to labeled deception benchmarks.</p>
+              </div>
+              <span class="badge-pill pill-engine-a">Engine A</span>
+            </div>
+
+            <!-- Domain Selector -->
+            <div class="form-group">
+              <label for="domain-select" class="form-label">Target Text Domain</label>
+              <div class="domain-select-wrapper">
+                <select id="domain-select" class="form-select" onchange="onDomainChange()">
+                  <option value="hotel_review">Hotel Reviews (Gold Standard Validated)</option>
+                  <option value="product_review">Product Reviews (E-Commerce)</option>
+                  <option value="email_message">Emails & Written Messages</option>
+                  <option value="social_comment">Social Media Posts & Comments</option>
+                  <option value="personal_statement">Personal Statements & Narratives</option>
+                  <option value="general_text" selected>General Written Text</option>
+                </select>
+                <span id="domain-validation-pill" class="pill-badge pill-info">Supported / General Transfer</span>
+              </div>
+              <div id="domain-caveat-box" class="notice-box notice-warning">
+                <strong>Notice:</strong> This domain utilizes lexical and n-gram transfer. Domain-specific ground truth has not yet been validated.
+              </div>
+            </div>
+
+            <!-- Sample Buttons -->
+            <div class="sample-actions">
+              <span class="sample-label">Quick Samples:</span>
+              <button class="chip chip-deceptive" onclick="loadSampleGeneral('hotel_deceptive')">Hotel (Deceptive)</button>
+              <button class="chip chip-truthful" onclick="loadSampleGeneral('hotel_truthful')">Hotel (Truthful)</button>
+              <button class="chip chip-ghost" onclick="loadSampleGeneral('email_sample')">Email Sample</button>
+              <button class="chip chip-ghost" onclick="clearGeneralText()">Clear</button>
+            </div>
+
+            <!-- Text Input -->
+            <div class="textarea-wrapper">
+              <textarea id="general-text-input" placeholder="Type or paste any text sample here to analyze for deceptive or truthful linguistic markers..." rows="8"></textarea>
+              <div class="char-count" id="general-char-count">0 characters | 0 words</div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+              <button id="analyze-general-btn" class="btn btn-primary" onclick="analyzeGeneralText()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span>Run General Classification</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Results Card -->
+          <div class="card glass-card results-card" id="general-results-card">
+            <div class="placeholder-state" id="general-placeholder">
+              <div class="placeholder-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+              <h3>Awaiting Input</h3>
+              <p>Enter text on the left and select "Run General Classification" to inspect predictions and feature weights.</p>
+            </div>
+
+            <div class="results-content hidden" id="general-results-content">
+              <!-- Verdict Banner -->
+              <div class="verdict-banner" id="general-verdict-banner">
+                <div class="verdict-badge" id="general-verdict-badge">Truthful</div>
+                <div class="verdict-details">
+                  <div class="score-line">
+                    <span class="score-title">Decision Score:</span>
+                    <strong id="general-score-val">+0.00</strong>
+                    <span class="margin-label" id="general-confidence-val">(Moderate Margin)</span>
+                  </div>
+                  <div class="prob-line" id="general-prob-line">
+                    <span class="score-title">Model Deception Probability:</span>
+                    <strong id="general-prob-val">0.0%</strong>
+                    <span class="score-sub">(Platt Calibrated Sigmoid — Benchmark Resemblance)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Domain Caveat In Results -->
+              <div class="domain-alert-banner" id="general-result-caveat"></div>
+
+              <!-- Token Highlighting Heatmap -->
+              <div class="highlight-section">
+                <div class="section-title-row">
+                  <h4>Token Contribution Heatmap</h4>
+                  <div class="legend">
+                    <span class="legend-item"><span class="legend-dot dot-deceptive"></span>Deceptive Cue</span>
+                    <span class="legend-item"><span class="legend-dot dot-truthful"></span>Truthful Cue</span>
+                  </div>
+                </div>
+                <div class="highlight-box" id="general-highlight-box"></div>
+              </div>
+
+              <!-- Feature Breakdown Grid -->
+              <div class="features-grid">
+                <div class="feature-col">
+                  <h5>Top Deceptive Cues (w · x &gt; 0)</h5>
+                  <ul class="feature-list" id="general-deceptive-cues"></ul>
+                </div>
+                <div class="feature-col">
+                  <h5>Top Truthful Cues (w · x &lt; 0)</h5>
+                  <ul class="feature-list" id="general-truthful-cues"></ul>
+                </div>
+              </div>
+
+              <!-- Scientific Disclaimer -->
+              <div class="scientific-disclaimer">
+                <strong>Scientific Notice:</strong> General text classification reflects statistical resemblance to training data. It does NOT prove whether an author is lying or telling the truth.
+              </div>
+
+              <!-- Feedback Widget -->
+              <div class="feedback-box">
+                <div class="feedback-header">
+                  <span>Do you agree with this classification?</span>
+                  <div class="feedback-buttons">
+                    <button class="btn-vote" onclick="openFeedbackModal(true)">Agree</button>
+                    <button class="btn-vote" onclick="openFeedbackModal(false)">Disagree</button>
+                  </div>
+                </div>
+                <div class="feedback-drawer hidden" id="general-feedback-drawer">
+                  <p class="drawer-title" id="general-feedback-title">Feedback:</p>
+                  <textarea id="general-feedback-comment" placeholder="Optional comments regarding this classification..." rows="2"></textarea>
+                  <button class="btn btn-secondary btn-sm" onclick="sendGeneralFeedback()">Submit Feedback</button>
+                </div>
+                <div class="feedback-msg hidden" id="general-feedback-msg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== TAB 2: ENGINE B (PERSONAL HISTORICAL STYLOMETRY) ==================== -->
+      <section id="section-engine-b" class="tab-content">
+        <div class="grid-layout">
+          <!-- Left Column: Profile & Comparison Input -->
+          <div class="card glass-card input-card">
+            <div class="card-header">
+              <div>
+                <h2>Engine B: Target-Author Stylometric Comparison</h2>
+                <p class="card-desc">Compares a submitted text against verified, authentic writing samples from the SAME target author.</p>
+              </div>
+              <span class="badge-pill pill-engine-b">Engine B</span>
+            </div>
+
+            <!-- Investigator Protocol Notice -->
+            <div class="investigator-protocol-box">
+              <span class="protocol-icon">⚖️</span>
+              <div class="protocol-text">
+                <strong>Investigator Protocol:</strong>
+                Personalized analysis requires comparing the submitted text against the <em>same person's</em> established genuine writing baseline. Do not use an investigator's own writing or another person's samples as the target baseline.
+              </div>
+            </div>
+
+            <!-- Profile Selector & Creator -->
+            <div class="profile-select-bar">
+              <div class="form-group flex-1">
+                <label for="profile-select" class="form-label">Active Target Author Profile</label>
+                <select id="profile-select" class="form-select" onchange="onProfileChange()">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+              <div class="profile-btn-group" style="display:flex; gap:0.5rem; align-items:flex-end;">
+                <button class="btn btn-primary btn-sm" onclick="openOnboardingWizard()" title="Launch Guided Target-Author Setup">
+                  <span>🎯 Guided Author Setup</span>
+                </button>
+                <button class="btn btn-secondary btn-icon-only" onclick="openNewProfileModal()" title="Create New Profile Manually">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                  <span>New</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Profile Overview Card -->
+            <div class="profile-overview-box" id="profile-overview-box">
+              <!-- Demo Subject Banner -->
+              <div id="demo-profile-banner" class="demo-subject-alert hidden">
+                <strong>⚠️ Demonstration Subject:</strong>
+                You are viewing pre-loaded demo data for sample subject "Alex Vance". This is provided for evaluation and demonstration purposes. It does <strong>not</strong> represent the person you are currently investigating.
+                <button class="btn btn-sm btn-ghost" onclick="openOnboardingWizard()" style="margin-left:0.5rem; text-decoration:underline;">Set Up Target Author</button>
+              </div>
+
+              <div class="profile-info-row">
+                <div>
+                  <h4 id="active-profile-name">Alex Vance</h4>
+                  <span id="active-profile-desc" class="profile-desc-sub">Technical Product Analyst</span>
+                </div>
+                <span id="active-profile-badge" class="pill-badge pill-pass">Moderate Baseline</span>
+              </div>
+              <div class="profile-stats-row">
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Samples</span>
+                  <span class="mini-stat-val" id="active-profile-samples">5</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Total Words</span>
+                  <span class="mini-stat-val" id="active-profile-words">284</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">Avg Sent Len</span>
+                  <span class="mini-stat-val" id="active-profile-sent-len">19.4 w</span>
+                </div>
+                <div class="mini-stat">
+                  <span class="mini-stat-label">TTR Diversity</span>
+                  <span class="mini-stat-val" id="active-profile-ttr">0.68</span>
+                </div>
+              </div>
+
+              <!-- Profile Actions -->
+              <div class="profile-action-btns">
+                <button class="btn btn-ghost btn-sm" onclick="openAddSampleModal()">
+                  + Add Historical Sample
+                </button>
+                <button class="btn btn-ghost btn-sm" onclick="toggleTimelineView()">
+                  View Timeline &amp; Samples
+                </button>
+                <button class="btn btn-danger-ghost btn-sm" onclick="deleteActiveProfile()">
+                  Purge Profile
+                </button>
+              </div>
+
+              <!-- Warnings if data is sparse -->
+              <div id="profile-warnings-container"></div>
+            </div>
+
+            <!-- Samples / Timeline Drawer (Collapsible) -->
+            <div id="profile-timeline-drawer" class="timeline-drawer hidden">
+              <div class="drawer-header">
+                <h4>Historical Baseline Samples</h4>
+                <button class="btn-close" onclick="toggleTimelineView()">&times;</button>
+              </div>
+              <div class="sample-list-container" id="profile-sample-list">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Current Text Input for Comparison -->
+            <div class="form-group" style="margin-top: 1.25rem;">
+              <div class="card-header" style="padding:0; margin-bottom: 0.5rem;">
+                <label for="personal-compare-input" class="form-label" style="margin:0;">Submitted Text from this Target Author</label>
+              </div>
+
+              <!-- Active Target Profile Indicator Box -->
+              <div id="personal-active-profile-indicator" class="active-profile-indicator-card">
+                <!-- Dynamically populated -->
+              </div>
+              
+              <div class="sample-actions">
+                <span class="sample-label">Test Samples:</span>
+                <button class="chip chip-truthful" onclick="loadSamplePersonal('matching')">Consistent Sample</button>
+                <button class="chip chip-deceptive" onclick="loadSamplePersonal('divergent')">Divergent (All-Caps / Short)</button>
+                <button class="chip chip-ghost" onclick="clearPersonalText()">Clear</button>
+              </div>
+
+              <div class="textarea-wrapper">
+                <textarea id="personal-compare-input" placeholder="Paste current statement, email, or message written by this target author to measure stylistic deviation from their baseline..." rows="7"></textarea>
+                <div class="char-count" id="personal-char-count">0 characters | 0 words</div>
+              </div>
+            </div>
+
+            <!-- Compare Button -->
+            <div class="form-actions">
+              <button id="compare-personal-btn" class="btn btn-primary" onclick="runPersonalComparison()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="8.5" cy="7" r="4"></circle>
+                  <polyline points="17 11 19 13 23 9"></polyline>
+                </svg>
+                <span>Compare Against Target Author Baseline</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Right Column: Stylometry Comparison Results -->
+          <div class="card glass-card results-card" id="personal-results-card">
+            <div class="placeholder-state" id="personal-placeholder">
+              <div class="placeholder-icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <h3>Awaiting Comparison</h3>
+              <p>Select a personal profile on the left, paste the author's new writing, and select "Compare Against Personal Baseline".</p>
+            </div>
+
+            <div class="results-content hidden" id="personal-results-content">
+              <!-- Alignment Index Card -->
+              <div class="alignment-banner" id="alignment-banner">
+                <div class="alignment-meter-col">
+                  <div class="meter-circle" id="meter-circle">
+                    <span class="meter-val" id="alignment-index-val">88%</span>
+                    <span class="meter-lbl">Alignment</span>
+                  </div>
+                </div>
+                <div class="alignment-details-col">
+                  <div class="alignment-title-row">
+                    <h3 id="alignment-assessment-title">Strong Stylistic Consistency</h3>
+                    <span class="pill-badge pill-pass" id="alignment-badge">Consistent</span>
+                  </div>
+                  <p class="alignment-summary-text" id="alignment-summary-text">
+                    The text matches the author's historical writing habits across key metrics.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Shifted Features Table -->
+              <div class="shifted-features-section">
+                <h4>Shifted Stylometric Features (|Z| &ge; 1.0)</h4>
+                <div class="table-responsive">
+                  <table class="stylometry-table">
+                    <thead>
+                      <tr>
+                        <th>Linguistic Metric</th>
+                        <th>Baseline (&mu; &plusmn; &sigma;)</th>
+                        <th>Current Text</th>
+                        <th>Z-Score</th>
+                        <th>Shift</th>
+                      </tr>
+                    </thead>
+                    <tbody id="shifted-features-tbody">
+                      <!-- Populated dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Stable Features Chips -->
+              <div class="stable-features-section">
+                <h4>Stable Habits (|Z| &lt; 1.0)</h4>
+                <div class="stable-chips-container" id="stable-features-chips">
+                  <!-- Populated dynamically -->
+                </div>
+              </div>
+
+              <!-- Benign Alternative Explanations -->
+              <div class="alternative-explanations-box">
+                <h4>Context-Aware Alternative Explanations</h4>
+                <p class="alt-intro">Observed writing shifts commonly arise from benign contextual factors:</p>
+                <ul class="alt-list" id="alt-explanations-list">
+                  <!-- Populated dynamically -->
+                </ul>
+              </div>
+
+              <!-- Scientific Disclaimer -->
+              <div class="scientific-disclaimer">
+                <strong>Scientific Notice:</strong> Stylometric divergence measures changes in writing habits, NOT deception. Variations occur naturally due to device, urgency, audience, or topic.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== TAB 3: COMBINED SYNTHESIS REPORT ==================== -->
+      <section id="section-combined" class="tab-content">
+        <div class="card glass-card">
+          <div class="card-header">
+            <div>
+              <h2>Combined Dual-Engine Investigative Synthesis</h2>
+              <p class="card-desc">Simultaneous evaluation across General Classification (Engine A) and Target-Author Stylometry (Engine B).</p>
+            </div>
+            <span class="badge-pill pill-combined">Synthesis</span>
+          </div>
+
+          <!-- Combined Input Form -->
+          <div class="combined-input-grid">
+            <div class="form-group">
+              <label for="combined-domain-select" class="form-label">Domain</label>
+              <select id="combined-domain-select" class="form-select">
+                <option value="hotel_review">Hotel Reviews (Validated)</option>
+                <option value="personal_statement">Personal Statements & Narratives (Validated)</option>
+                <option value="email_message">Emails & Messages</option>
+                <option value="product_review">Product Reviews</option>
+                <option value="social_comment">Social Media Posts & Comments</option>
+                <option value="general_text" selected>General Text</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="combined-profile-select" class="form-label">Target Author Profile (Optional)</label>
+              <select id="combined-profile-select" class="form-select" onchange="onCombinedProfileChange()">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+          </div>
+
+          <!-- Active Target Author Indicator in Combined Tab -->
+          <div id="combined-active-profile-indicator" class="active-profile-indicator-card" style="margin-top:0.75rem;">
+            <!-- Populated dynamically -->
+          </div>
+
+          <div class="textarea-wrapper" style="margin-top:0.75rem;">
+            <textarea id="combined-text-input" placeholder="Paste the target person's statement, review, or message to analyze with both engines simultaneously..." rows="6"></textarea>
+            <div class="char-count" id="combined-char-count">0 characters | 0 words</div>
+          </div>
+
+          <div class="form-actions">
+            <button id="run-combined-btn" class="btn btn-primary" onclick="runCombinedAnalysis()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span>Run Dual-Engine Synthesis</span>
+            </button>
+          </div>
+
+          <!-- Results Split Dashboard -->
+          <div id="combined-results-view" class="combined-dashboard hidden">
+            <!-- Synthesis Narrative Card -->
+            <div class="synthesis-card">
+              <div class="synthesis-header">
+                <div>
+                  <span class="sub-label">Synthesized Interpretation</span>
+                  <h3 id="combined-concordance-title">Consistent Truthful Alignment</h3>
+                </div>
+                <span class="pill-badge pill-pass" id="combined-concordance-badge">Concordant</span>
+              </div>
+              <p class="synthesis-narrative" id="combined-narrative-text">
+                Both engines show alignment with truthful experiential patterns.
+              </p>
+              <div class="synthesis-rule-alert">
+                <strong>Methodological Rule:</strong> General classification scores and stylometric deviation indices measure separate linguistic properties. They are <u>never</u> combined mathematically into an invented single "deception percentage."
+              </div>
+            </div>
+
+            <!-- Side-by-Side Dual Engine Comparison Cards -->
+            <div class="dual-panels-grid">
+              <!-- Engine A Panel -->
+              <div class="sub-card engine-a-subcard">
+                <div class="subcard-header">
+                  <h4>Engine A: General Classifier</h4>
+                  <span class="badge-pill pill-engine-a">Benchmark</span>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Predicted Class:</span>
+                  <strong class="metric-val" id="comb-a-class">Truthful</strong>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">SVM Decision Score:</span>
+                  <span class="metric-val" id="comb-a-score">-0.45</span>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Calibrated Probability:</span>
+                  <span class="metric-val" id="comb-a-prob">28.4%</span>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Domain Status:</span>
+                  <span class="metric-val" id="comb-a-domain">Validated</span>
+                </div>
+                <p class="subcard-note" id="comb-a-caveat">Evaluated against gold-standard benchmark.</p>
+              </div>
+
+              <!-- Engine B Panel -->
+              <div class="sub-card engine-b-subcard">
+                <div class="subcard-header">
+                  <h4>Engine B: Personal Stylometry</h4>
+                  <span class="badge-pill pill-engine-b">Individual</span>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Stylometric Alignment:</span>
+                  <strong class="metric-val" id="comb-b-alignment">85.0%</strong>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Assessment:</span>
+                  <span class="metric-val" id="comb-b-assessment">Consistent</span>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Baseline Samples:</span>
+                  <span class="metric-val" id="comb-b-samples">5 samples</span>
+                </div>
+                <div class="subcard-metric-row">
+                  <span class="metric-key">Baseline Reliability:</span>
+                  <span class="metric-val" id="comb-b-reliability">Moderate</span>
+                </div>
+                <p class="subcard-note" id="comb-b-summary">No extreme stylistic deviation observed.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ==================== TAB 4: METRICS & PRIVACY ==================== -->
+      <section id="section-metrics" class="tab-content">
+        <div class="card glass-card">
+          <div class="card-header">
+            <div>
+              <h2>Model Benchmark Metrics & Governance</h2>
+              <p class="card-desc">Verified evaluation on locked leak-free test sets, domain coverage matrix, and privacy governance.</p>
+            </div>
+            <span class="badge-pill badge-accent">Audited & Verified</span>
+          </div>
+
+          <!-- Top Metric Cards -->
+          <div class="metrics-grid">
+            <div class="stat-box">
+              <span class="stat-label">Linear SVM Test Accuracy</span>
+              <span class="stat-value text-accent" id="metric-acc-val">90.62%</span>
+              <span class="stat-sub">Combined Word+Char TF-IDF (320 tests)</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Calibrated SVM Accuracy</span>
+              <span class="stat-value text-success" id="metric-cal-acc-val">88.75%</span>
+              <span class="stat-sub">Platt Sigmoid Scaling (AUC: 0.9555)</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Test Precision (Deceptive)</span>
+              <span class="stat-value text-info" id="metric-prec-val">87.80%</span>
+              <span class="stat-sub">Reliability on flagged samples</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-label">Test Recall (Deceptive)</span>
+              <span class="stat-value text-warning" id="metric-rec-val">90.00%</span>
+              <span class="stat-sub">Catch rate of deceptive samples</span>
+            </div>
+          </div>
+
+          <!-- Candidate Model Comparison Table -->
+          <div class="audit-table-section">
+            <h3>Candidate Model Benchmark (Standardized Test Split: 320 Samples)</h3>
+            <div class="table-responsive">
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th>Model Architecture</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1-Score</th>
+                    <th>ROC AUC</th>
+                  </tr>
+                </thead>
+                <tbody id="candidate-metrics-tbody">
+                  <tr>
+                    <td>Word TF-IDF (1-2) + Linear SVM</td>
+                    <td>90.00%</td>
+                    <td>89.02%</td>
+                    <td>91.25%</td>
+                    <td>90.12%</td>
+                    <td>0.9503</td>
+                  </tr>
+                  <tr>
+                    <td>Char TF-IDF (3-5) + Linear SVM</td>
+                    <td>87.81%</td>
+                    <td>87.58%</td>
+                    <td>88.12%</td>
+                    <td>87.85%</td>
+                    <td>0.9498</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td><strong>Combined Word+Char TF-IDF + Linear SVM (Baseline)</strong></td>
+                    <td><strong>90.62%</strong></td>
+                    <td><strong>89.63%</strong></td>
+                    <td><strong>91.87%</strong></td>
+                    <td><strong>90.74%</strong></td>
+                    <td><strong>0.9576</strong></td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td><strong>Calibrated Combined SVM (Platt Scaling)</strong></td>
+                    <td><strong>88.75%</strong></td>
+                    <td><strong>87.80%</strong></td>
+                    <td><strong>90.00%</strong></td>
+                    <td><strong>88.89%</strong></td>
+                    <td><strong>0.9555</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Multi-Domain Status Matrix -->
+          <div class="audit-table-section">
+            <h3>Multi-Domain Validation Matrix &amp; Empirical Benchmarks</h3>
+            <div class="table-responsive">
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th>Domain / Model Evaluation</th>
+                    <th>Corpus / Provenance</th>
+                    <th>Sample Volume</th>
+                    <th>Validation Status</th>
+                    <th>Empirical Test Accuracy &amp; AUC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Hotel Reviews (Dedicated Baseline)</strong></td>
+                    <td>Ott et al. (ACL 2011, 2013)</td>
+                    <td>1,596 deduplicated (1,116 train / 160 val / 320 test)</td>
+                    <td><span class="pill-badge pill-pass">Empirically Validated</span></td>
+                    <td><strong>88.75% Test Acc (0.9555 AUC)</strong> [Calibrated Combined SVM; 90.62% uncalibrated]</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Personal Statements (Dedicated Model)</strong></td>
+                    <td>Pérez-Rosas &amp; Mihalcea (EMNLP 2015)</td>
+                    <td>6,844 clean / 511 authors (4,795 train / 679 val / 1,370 test)</td>
+                    <td><span class="pill-badge pill-pass">Empirically Validated (Contributor-Grouped)</span></td>
+                    <td><strong>62.55% Test Acc (0.6626 AUC)</strong> [103 Held-Out Authors; 0.6317 F1]</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td><strong>Joint Multi-Domain Model (Hotel &amp; Personal Statements)</strong></td>
+                    <td>Combined Hotel + Personal Statements Corpus</td>
+                    <td>5,911 train / 1,690 test (Joint Training)</td>
+                    <td><span class="pill-badge pill-pass">Multi-Domain Joint</span></td>
+                    <td><strong>Hotel: 85.00% (0.9307 AUC) | PS: 62.85% (0.6562 AUC)</strong></td>
+                  </tr>
+                  <tr style="background: rgba(239, 68, 68, 0.05);">
+                    <td><strong>Cross-Domain Transfer: Hotel &rarr; Personal Statements</strong></td>
+                    <td>Zero-Shot Transfer (Hotel model evaluated on PS test split)</td>
+                    <td>1,370 held-out test personal statements</td>
+                    <td><span class="pill-badge pill-fail">Empirical Transfer Failure</span></td>
+                    <td><strong>48.32% Test Acc (0.4957 AUC)</strong> [Near-chance: markers do not transfer zero-shot]</td>
+                  </tr>
+                  <tr style="background: rgba(239, 68, 68, 0.05);">
+                    <td><strong>Cross-Domain Transfer: Personal Statements &rarr; Hotel</strong></td>
+                    <td>Zero-Shot Transfer (PS model evaluated on Hotel test split)</td>
+                    <td>320 held-out test hotel reviews</td>
+                    <td><span class="pill-badge pill-fail">Empirical Transfer Failure</span></td>
+                    <td><strong>49.69% Test Acc (0.5213 AUC)</strong> [Chance transfer: narrative cues do not fit hotel spam]</td>
+                  </tr>
+                  <tr>
+                    <td>Product Reviews</td>
+                    <td>Extensible CSV Importer</td>
+                    <td>Awaiting Ingestion</td>
+                    <td><span class="pill-badge pill-info">Supported / General Transfer</span></td>
+                    <td>Pending Ground Truth (Unvalidated)</td>
+                  </tr>
+                  <tr>
+                    <td>Emails &amp; Messages</td>
+                    <td>Extensible CSV Importer</td>
+                    <td>Awaiting Ingestion</td>
+                    <td><span class="pill-badge pill-info">Supported / General Transfer</span></td>
+                    <td>Pending Ground Truth (Unvalidated)</td>
+                  </tr>
+                  <tr>
+                    <td>Social Comments</td>
+                    <td>Extensible CSV Importer</td>
+                    <td>Awaiting Ingestion</td>
+                    <td><span class="pill-badge pill-info">Supported / General Transfer</span></td>
+                    <td>Pending Ground Truth (Unvalidated)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Data Leakage & Deduplication Audit -->
+          <div class="audit-table-section">
+            <h3>Leakage Prevention &amp; Data Audit Report</h3>
+            <div class="table-responsive">
+              <table class="audit-table">
+                <thead>
+                  <tr>
+                    <th>Audit Metric</th>
+                    <th>Result</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Hotel Reviews Ingested</td>
+                    <td>1,600 reviews (Ott et al. gold standard)</td>
+                    <td><span class="pill-badge pill-pass">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td>Hotel Exact Duplicates Dropped</td>
+                    <td>4 identical duplicate reviews removed (1,596 clean)</td>
+                    <td><span class="pill-badge pill-pass">Cleaned</span></td>
+                  </tr>
+                  <tr>
+                    <td>Hotel Train / Test Split Leakage</td>
+                    <td>0 overlapping text hashes across splits (1,116 train / 160 val / 320 test)</td>
+                    <td><span class="pill-badge pill-pass">Zero Leakage</span></td>
+                  </tr>
+                  <tr>
+                    <td>Personal Statements Ingested</td>
+                    <td>7,168 statements across 512 authors (Pérez-Rosas &amp; Mihalcea 2015)</td>
+                    <td><span class="pill-badge pill-pass">Verified</span></td>
+                  </tr>
+                  <tr>
+                    <td>PS Exact Duplicates Dropped</td>
+                    <td>167 exact duplicate statements removed</td>
+                    <td><span class="pill-badge pill-pass">Cleaned</span></td>
+                  </tr>
+                  <tr>
+                    <td>PS Conflicting Label Audit</td>
+                    <td>56 contradictory duplicate sentence hashes dropped (157 rows purged; 6,844 clean)</td>
+                    <td><span class="pill-badge pill-pass">Cleaned</span></td>
+                  </tr>
+                  <tr>
+                    <td>PS Contributor-Grouped Splits</td>
+                    <td>Train: 4,795 (357 authors) | Val: 679 (51 authors) | Test: 1,370 (103 authors)</td>
+                    <td><span class="pill-badge pill-pass">GroupShuffleSplit</span></td>
+                  </tr>
+                  <tr>
+                    <td>PS Contributor &amp; Hash Leakage</td>
+                    <td>0 author overlap and 0 text hash overlap across splits</td>
+                    <td><span class="pill-badge pill-pass">Zero Leakage</span></td>
+                  </tr>
+                  <tr>
+                    <td>Cross-Dataset Corpus Separation</td>
+                    <td>0 text hash overlap between Hotel and Personal Statement corpora</td>
+                    <td><span class="pill-badge pill-pass">Zero Overlap</span></td>
+                  </tr>
+                  <tr>
+                    <td>Data Augmentation Assessment</td>
+                    <td>Synonym/paraphrase augmentation rejected (empirically degrades deception cues)</td>
+                    <td><span class="pill-badge pill-pass">Empirically Grounded</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Privacy & Data Governance (Phase 10) -->
+          <div class="privacy-card">
+            <h3>Phase 10: Privacy, Security & Data Governance</h3>
+            <p>Historical writing samples constitute sensitive personal information. VeritasAI enforces strict safeguards:</p>
+            <ul class="privacy-list">
+              <li><strong>Local Storage Isolation:</strong> All personal profiles and historical writing samples are stored locally in isolated files (<code>profiles_store/</code>) on your machine.</li>
+              <li><strong>Explicit Authorization:</strong> New profiles require explicit confirmation that the user is authorized to analyze the author's writing.</li>
+              <li><strong>Zero External Transmission:</strong> Private text is never sent to third-party APIs or external cloud servers.</li>
+              <li><strong>No Model Retraining Without Consent:</strong> Personal historical text is never silently fed into training sets.</li>
+              <li><strong>Permanent Data Purge:</strong> Deleting a sample or profile permanently removes the text from disk.</li>
+              <li><strong>Sanitized Logging:</strong> Application logs do not record complete private messages.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>General Text Deception Detection System • Dual-Engine Architecture (FastAPI &amp; Scikit-Learn) • Designed for Research &amp; Decision Support</p>
+    </footer>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal: Create New Profile (Manual) -->
+  <div id="modal-new-profile" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Create Target Author Profile</h3>
+        <button class="btn-close" onclick="closeNewProfileModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="new-profile-name" class="form-label">Target Author / Subject Name *</label>
+          <input type="text" id="new-profile-name" class="form-input" placeholder="e.g., Subject A, Witness J. Doe, Vendor Contact">
+        </div>
+        <div class="form-group">
+          <label for="new-profile-desc" class="form-label">Role, Context, or Case ID</label>
+          <input type="text" id="new-profile-desc" class="form-input" placeholder="e.g., Case 2026-B, Customer Feedback Author, Email Sender">
+        </div>
+        <div class="form-group">
+          <label for="new-profile-notes" class="form-label">Investigative Notes &amp; Sample Provenance</label>
+          <textarea id="new-profile-notes" class="form-input" rows="2" placeholder="e.g., Baseline compiled from verified historical corporate correspondence."></textarea>
+        </div>
+        <div class="form-group-checkbox">
+          <label class="checkbox-label">
+            <input type="checkbox" id="new-profile-consent">
+            <span><strong>Investigator Authorization Confirmation:</strong> I confirm I have legitimate authorization to store and analyze writing samples for this target subject, and that baseline samples represent verified genuine writing from this same person.</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeNewProfileModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitNewProfile()">Create Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add Historical Sample -->
+  <div id="modal-add-sample" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add Historical Writing Sample</h3>
+        <button class="btn-close" onclick="closeAddSampleModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="sample-text" class="form-label">Historical Genuine Writing Sample *</label>
+          <textarea id="sample-text" class="form-input" rows="6" placeholder="Paste historical writing sample from this SAME target author..."></textarea>
+        </div>
+        <div class="grid-2-col">
+          <div class="form-group">
+            <label for="sample-date" class="form-label">Composition Date</label>
+            <input type="date" id="sample-date" class="form-input">
+          </div>
+          <div class="form-group">
+            <label for="sample-context" class="form-label">Context / Channel</label>
+            <select id="sample-context" class="form-select">
+              <option value="professional_email">Professional Email</option>
+              <option value="casual_chat">Casual Chat / Messaging</option>
+              <option value="social_post">Social Media Post</option>
+              <option value="narrative">Personal Narrative / Statement</option>
+              <option value="general_document">Formal Document / Essay</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="sample-desc" class="form-label">Sample Title / Source Identifier</label>
+          <input type="text" id="sample-desc" class="form-input" placeholder="e.g., Q3 Project Status Update">
+        </div>
+        <div class="form-group-checkbox">
+          <label class="checkbox-label">
+            <input type="checkbox" id="sample-rep" checked>
+            <span>Mark as representative of normal writing habits</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeAddSampleModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAddSample()">Save Sample</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Guided Target-Author Baseline Onboarding Wizard -->
+  <div id="modal-onboarding-wizard" class="modal-overlay hidden">
+    <div class="modal-card modal-wizard-card">
+      <div class="modal-header">
+        <div>
+          <span class="badge-pill pill-engine-b">Investigative Protocol</span>
+          <h3 id="wizard-title" style="margin-top:0.25rem;">Target Author Baseline Setup</h3>
+        </div>
+        <button class="btn-close" onclick="closeOnboardingWizard()">&times;</button>
+      </div>
+
+      <!-- Wizard Step Indicator -->
+      <div class="wizard-stepper">
+        <div class="wizard-step active" id="w-step-ind-1">
+          <span class="step-num">1</span>
+          <span class="step-text">Target Author</span>
+        </div>
+        <div class="wizard-step-line"></div>
+        <div class="wizard-step" id="w-step-ind-2">
+          <span class="step-num">2</span>
+          <span class="step-text">Historical Samples</span>
+        </div>
+        <div class="wizard-step-line"></div>
+        <div class="wizard-step" id="w-step-ind-3">
+          <span class="step-num">3</span>
+          <span class="step-text">Readiness Check</span>
+        </div>
+        <div class="wizard-step-line"></div>
+        <div class="wizard-step" id="w-step-ind-4">
+          <span class="step-num">4</span>
+          <span class="step-text">Confirm &amp; Active</span>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- STEP 1: TARGET AUTHOR IDENTITY & AUTHORIZATION -->
+        <div id="wizard-step-1" class="wizard-step-content">
+          <div class="wizard-info-callout">
+            <strong>🎯 Purpose &amp; Protocol:</strong>
+            This workflow creates a baseline profile for the specific person whose texts you are investigating.
+            <em>Do NOT submit an investigator's own writing samples as the target person's baseline.</em>
+          </div>
+          <div class="form-group" style="margin-top: 1rem;">
+            <label for="w-profile-name" class="form-label">Target Author / Subject Name *</label>
+            <input type="text" id="w-profile-name" class="form-input" placeholder="e.g., Subject A, Witness J. Doe, Vendor Contact">
+            <div class="form-error hidden" id="w-err-name" style="color:var(--color-deceptive); font-size:0.8rem; margin-top:4px;">Please enter a target author or subject name.</div>
+          </div>
+          <div class="form-group">
+            <label for="w-profile-desc" class="form-label">Subject Role, Context, or Case ID</label>
+            <input type="text" id="w-profile-desc" class="form-input" placeholder="e.g., Case 2026-B, Customer Feedback Author, Email Sender">
+          </div>
+          <div class="form-group">
+            <label for="w-profile-notes" class="form-label">Investigative Notes &amp; Sample Provenance</label>
+            <textarea id="w-profile-notes" class="form-input" rows="2" placeholder="e.g., Baseline compiled from verified historical corporate emails from 2025-2026."></textarea>
+          </div>
+          <div class="form-group-checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" id="w-profile-consent">
+              <span><strong>Investigator Authorization Confirmation:</strong> I confirm I have legitimate authorization to store and analyze writing samples for this target subject, and that baseline samples represent verified genuine writing from this same person.</span>
+            </label>
+            <div class="form-error hidden" id="w-err-consent" style="color:var(--color-deceptive); font-size:0.8rem; margin-top:4px;">Authorization confirmation is required to proceed.</div>
+          </div>
+          <div class="privacy-mini-notice" style="margin-top:1rem; padding:0.75rem; background:rgba(255,255,255,0.03); border-radius:var(--radius-sm); font-size:0.75rem; color:var(--text-secondary);">
+            🔒 <strong>Privacy Guarantee:</strong> All profile data and samples are stored locally in isolated files (<code>profiles_store/</code>) on this system. No data is sent to external services or used to retrain population models.
+          </div>
+        </div>
+
+        <!-- STEP 2: HISTORICAL GENUINE SAMPLES INTAKE -->
+        <div id="wizard-step-2" class="wizard-step-content hidden">
+          <div class="wizard-info-callout">
+            <strong>📝 Sample Requirements:</strong>
+            Provide authentic writing samples written by this <strong>same person</strong> (e.g. past sent emails, authenticated personal statements, or signed memos).
+            <em>Avoid co-authored, ghostwritten, or AI-generated texts.</em>
+          </div>
+
+          <!-- Intake Form -->
+          <div class="wizard-intake-card" style="margin-top:0.75rem; padding:1rem; background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+            <div class="form-group">
+              <label for="w-sample-text" class="form-label">Historical Genuine Writing Sample *</label>
+              <textarea id="w-sample-text" class="form-input" rows="4" placeholder="Paste authentic writing sample from this target author here..."></textarea>
+              <div class="char-count" id="w-sample-count">0 characters | 0 words</div>
+              <div class="form-error hidden" id="w-err-sample" style="color:var(--color-deceptive); font-size:0.8rem; margin-top:4px;">Sample text must contain at least 5 words.</div>
+            </div>
+            <div class="grid-2-col">
+              <div class="form-group">
+                <label for="w-sample-context" class="form-label">Channel / Context</label>
+                <select id="w-sample-context" class="form-select">
+                  <option value="professional_email">Professional Email</option>
+                  <option value="personal_statement">Personal Statement / Narrative</option>
+                  <option value="casual_chat">Casual Chat / Messaging</option>
+                  <option value="general_document">Formal Document / Essay</option>
+                  <option value="social_post">Public Post / Comment</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="w-sample-desc" class="form-label">Sample Source / Identifier</label>
+                <input type="text" id="w-sample-desc" class="form-input" placeholder="e.g., Verified 2025 Project Memo">
+              </div>
+            </div>
+            <div class="form-actions" style="margin-top:0.5rem; justify-content:flex-end;">
+              <button id="w-add-sample-btn" class="btn btn-secondary btn-sm" onclick="submitOnboardingSample()">
+                <span>+ Add Sample to Target Author Profile</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Baseline Readiness Tracker -->
+          <div class="readiness-progress-box" style="margin-top:1rem; padding:0.75rem 1rem; background:var(--bg-surface); border:1px solid var(--border-accent); border-radius:var(--radius-md);">
+            <div class="readiness-progress-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <span class="progress-title" style="font-weight:600; font-size:0.85rem;">Baseline Data Volume:</span>
+              <span id="w-readiness-badge" class="pill-badge pill-warning">Needs More Writing Samples</span>
+            </div>
+            <div class="progress-bars-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+              <div>
+                <div class="progress-label-row" style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                  <span>Samples: <strong id="w-stat-samples">0</strong> / 3 minimum</span>
+                  <span id="w-pct-samples">0%</span>
+                </div>
+                <div class="progress-bar-bg" style="background:rgba(255,255,255,0.1); height:8px; border-radius:4px; overflow:hidden;">
+                  <div id="w-bar-samples" class="progress-bar-fill" style="width:0%; height:100%; background:var(--accent-primary); transition:width 0.3s ease;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="progress-label-row" style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                  <span>Words: <strong id="w-stat-words">0</strong> / 200 minimum</span>
+                  <span id="w-pct-words">0%</span>
+                </div>
+                <div class="progress-bar-bg" style="background:rgba(255,255,255,0.1); height:8px; border-radius:4px; overflow:hidden;">
+                  <div id="w-bar-words" class="progress-bar-fill" style="width:0%; height:100%; background:var(--color-truthful); transition:width 0.3s ease;"></div>
+                </div>
+              </div>
+            </div>
+            <div id="w-readiness-hint" class="readiness-hint-text" style="font-size:0.75rem; color:var(--text-secondary); margin-top:0.5rem;">
+              Add at least 3 historical samples and 200 total words to establish operational baseline variance.
+            </div>
+          </div>
+
+          <!-- Current Samples List -->
+          <div class="wizard-samples-list" style="margin-top:1rem;">
+            <div class="samples-list-header" style="margin-bottom:0.5rem;">
+              <h5>Samples in Target Author Baseline (<span id="w-sample-items-count">0</span>)</h5>
+            </div>
+            <div id="w-samples-container" class="wizard-samples-scroll" style="max-height:160px; overflow-y:auto; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:0.5rem;">
+              <p style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:1rem;">No samples added yet. Paste a sample above and click "+ Add Sample".</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: BASELINE SUFFICIENCY & SCIENTIFIC READINESS -->
+        <div id="wizard-step-3" class="wizard-step-content hidden">
+          <div class="readiness-review-card" style="padding:1rem; background:var(--bg-surface); border:1px solid var(--border-accent); border-radius:var(--radius-md);">
+            <div class="readiness-review-header" style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h4 id="w-review-name">Target Author</h4>
+                <span id="w-review-desc" class="profile-desc-sub">Profile Context</span>
+              </div>
+              <span id="w-review-status-badge" class="pill-badge pill-pass">Operationally Ready</span>
+            </div>
+
+            <div class="profile-stats-row" style="margin-top:1rem;">
+              <div class="mini-stat">
+                <span class="mini-stat-label">Total Samples</span>
+                <span class="mini-stat-val" id="w-review-samples">0</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Total Words</span>
+                <span class="mini-stat-val" id="w-review-words">0</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Avg Sentence Len</span>
+                <span class="mini-stat-val" id="w-review-sent">0 w</span>
+              </div>
+              <div class="mini-stat">
+                <span class="mini-stat-label">Vocabulary TTR</span>
+                <span class="mini-stat-val" id="w-review-ttr">0.00</span>
+              </div>
+            </div>
+
+            <div id="w-readiness-detail-box" class="notice-box notice-info" style="margin-top:1rem;">
+              <!-- Populated dynamically -->
+            </div>
+
+            <!-- Scientific Validity Distinction (Req 10) -->
+            <div class="scientific-disclaimer" style="margin-top:1rem;">
+              <strong>Scientific Protocol Notice:</strong>
+              Operational readiness indicates the statistical algorithm can compute variance (&mu; &plusmn; &sigma;) across 17 stylometric metrics. It does <strong>not</strong> constitute proof of universal scientific reliability.
+              Authentic writing style naturally varies across communication channels, urgency, audience, and emotional states. Continual additions of authentic samples strengthen baseline robustness.
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: CONFIRMATION & ACTIVATION -->
+        <div id="wizard-step-4" class="wizard-step-content hidden">
+          <div class="wizard-success-card" style="text-align:center; padding:1.5rem 1rem;">
+            <div class="success-icon-wrap" style="font-size:2.5rem; margin-bottom:0.5rem;">🎯</div>
+            <h3>Target Author Profile Ready</h3>
+            <p id="w-success-summary" style="color:var(--text-secondary); margin-bottom:1rem;">The profile has been established and set as the active baseline for personalized stylometric analysis.</p>
+
+            <div class="wizard-active-profile-summary" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border-accent); margin-bottom:1.5rem; text-align:left;">
+              <div>
+                <strong id="w-success-name">Target Author Name</strong>
+                <div id="w-success-stats" style="font-size:0.8rem; color:var(--text-secondary);">3 samples • 240 words • Operationally Ready</div>
+              </div>
+              <span class="pill-badge pill-pass">Active Target</span>
+            </div>
+
+            <div class="wizard-next-actions">
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.75rem;">Select where you would like to proceed:</p>
+              <div class="actions-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <button class="btn btn-secondary" onclick="finishOnboardingToTab('engine-b')">
+                  <span>Go to Target Stylometry (Engine B)</span>
+                </button>
+                <button class="btn btn-primary" onclick="finishOnboardingToTab('combined')">
+                  <span>Go to Combined Dual Analysis</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wizard Footer Controls -->
+      <div class="modal-footer" id="wizard-footer">
+        <button id="w-btn-back" class="btn btn-ghost hidden" onclick="wizardGoBack()">Back</button>
+        <button id="w-btn-cancel" class="btn btn-ghost" onclick="closeOnboardingWizard()">Cancel</button>
+        <button id="w-btn-next" class="btn btn-primary" onclick="wizardGoNext()">Next: Add Samples &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,173 @@
+{
+  "title": "Multi-Domain Deception Detection Empirical Benchmark",
+  "description": "Comprehensive comparative evaluation across Hotel Reviews (Ott et al.) and Personal Statements (P\u00e9rez-Rosas & Mihalcea 2015)",
+  "datasets_used": {
+    "hotel_reviews": {
+      "source": "Ott et al. (ACL 2011, 2013)",
+      "train_samples": 1116,
+      "test_samples": 320
+    },
+    "personal_statements": {
+      "source": "P\u00e9rez-Rosas & Mihalcea (EMNLP 2015)",
+      "train_samples": 4795,
+      "val_samples": 679,
+      "test_samples": 1370,
+      "splitting_strategy": "Contributor-grouped (103 held-out test authors, zero contributor overlap)"
+    }
+  },
+  "experiments": {
+    "exp1_in_domain_personal_statements": {
+      "experiment_name": "Exp 1: Personal Statements In-Domain (P\u00e9rez-Rosas & Mihalcea 2015 Held-out Test)",
+      "sample_count": 1370,
+      "truthful_count": 672,
+      "deceptive_count": 698,
+      "accuracy": 0.6255,
+      "balanced_accuracy": 0.6255,
+      "precision": 0.6331,
+      "recall": 0.6304,
+      "f1": 0.6317,
+      "roc_auc": 0.6626,
+      "brier_score_loss": 0.2308,
+      "confusion_matrix": [
+        [
+          417,
+          255
+        ],
+        [
+          258,
+          440
+        ]
+      ],
+      "cv_results": {
+        "strategy": "5-Fold Contributor-Grouped CV on Training Split",
+        "mean_accuracy": 0.6086,
+        "mean_f1": 0.6126,
+        "fold_details": [
+          {
+            "fold": 1,
+            "accuracy": 0.6223849372384938,
+            "f1": 0.6259067357512953
+          },
+          {
+            "fold": 2,
+            "accuracy": 0.5983263598326359,
+            "f1": 0.6152304609218436
+          },
+          {
+            "fold": 3,
+            "accuracy": 0.6349372384937239,
+            "f1": 0.647118301314459
+          },
+          {
+            "fold": 4,
+            "accuracy": 0.5871369294605809,
+            "f1": 0.5819327731092437
+          },
+          {
+            "fold": 5,
+            "accuracy": 0.6002076843198338,
+            "f1": 0.5925925925925926
+          }
+        ]
+      }
+    },
+    "exp2_cross_domain_hotel_to_ps": {
+      "experiment_name": "Exp 2: Zero-Shot Cross-Domain (Hotel Model evaluated on Personal Statements Test)",
+      "sample_count": 1370,
+      "truthful_count": 672,
+      "deceptive_count": 698,
+      "accuracy": 0.4832,
+      "balanced_accuracy": 0.4902,
+      "precision": 0.4725,
+      "recall": 0.1232,
+      "f1": 0.1955,
+      "roc_auc": 0.4957,
+      "brier_score_loss": 0.3582,
+      "confusion_matrix": [
+        [
+          576,
+          96
+        ],
+        [
+          612,
+          86
+        ]
+      ],
+      "finding": "Demonstrates near-chance transfer (48.3% accuracy, 0.4957 AUC), proving that hotel-review deception markers do not generalize zero-shot to first-person personal statements."
+    },
+    "exp3_cross_domain_ps_to_hotel": {
+      "experiment_name": "Exp 3: Zero-Shot Cross-Domain (Personal Statement Model evaluated on Hotel Reviews Test)",
+      "sample_count": 320,
+      "truthful_count": 160,
+      "deceptive_count": 160,
+      "accuracy": 0.4969,
+      "balanced_accuracy": 0.4969,
+      "precision": 0.4969,
+      "recall": 0.5,
+      "f1": 0.4984,
+      "roc_auc": 0.5213,
+      "brier_score_loss": 0.2562,
+      "confusion_matrix": [
+        [
+          79,
+          81
+        ],
+        [
+          80,
+          80
+        ]
+      ],
+      "finding": "Demonstrates chance transfer (49.7% accuracy, 0.5213 AUC), confirming that personal narrative markers do not directly translate to commercial hospitality opinion spam."
+    },
+    "exp4_joint_multi_domain": {
+      "hotel_evaluation": {
+        "experiment_name": "Exp 4A: Joint Multi-Domain Model -> Evaluated on Hotel Reviews Test Set",
+        "sample_count": 320,
+        "truthful_count": 160,
+        "deceptive_count": 160,
+        "accuracy": 0.85,
+        "balanced_accuracy": 0.85,
+        "precision": 0.8544,
+        "recall": 0.8438,
+        "f1": 0.8491,
+        "roc_auc": 0.9307,
+        "brier_score_loss": 0.1693,
+        "confusion_matrix": [
+          [
+            137,
+            23
+          ],
+          [
+            25,
+            135
+          ]
+        ]
+      },
+      "personal_statement_evaluation": {
+        "experiment_name": "Exp 4B: Joint Multi-Domain Model -> Evaluated on Personal Statements Test Set",
+        "sample_count": 1370,
+        "truthful_count": 672,
+        "deceptive_count": 698,
+        "accuracy": 0.6285,
+        "balanced_accuracy": 0.6284,
+        "precision": 0.636,
+        "recall": 0.6332,
+        "f1": 0.6346,
+        "roc_auc": 0.6562,
+        "brier_score_loss": 0.2339,
+        "confusion_matrix": [
+          [
+            419,
+            253
+          ],
+          [
+            256,
+            442
+          ]
+        ]
+      },
+      "finding": "The joint model preserves strong in-domain hotel performance (85.0% accuracy, 0.9307 AUC) while concurrently attaining in-domain personal statement accuracy (62.8% accuracy, 0.6562 AUC)."
+    }
+  },
+  "scientific_limitations_and_disclaimer": "Notice: Personal statement deception exhibits modest separability (62.55% accuracy) using lexical n-grams, consistent with published academic findings in P\u00e9rez-Rosas & Mihalcea (2015). Cross-domain zero-shot experiments (~48-50%) show that text deception is heavily domain-dependent and context-specific. Models evaluate statistical resemblance to training data and do not constitute universal lie detection."
+}

@@ -1,0 +1,122 @@
+{
+  "experiment_metadata": {
+    "dataset": "Personal Statements (Perez-Rosas & Mihalcea 2015)",
+    "eval_split": "personal_statements_split_test.csv",
+    "sample_count": 1370,
+    "held_out_authors": 103,
+    "class_counts": {
+      "truthful_0": 672,
+      "deceptive_1": 698
+    },
+    "majority_class_baseline_accuracy": 0.5095,
+    "selection_rule_audit": {
+      "declared_primary_metric": "5-Fold Contributor-Grouped Cross-Validation Macro-F1 on Training Split",
+      "strict_cv_macro_f1_ranking": {
+        "rank_1": "Exp_02 (Word-Only, C=0.15): CV Macro-F1 = 0.6166, CV Acc = 61.69%",
+        "rank_2": "Exp_06 (Combined Word+Char, C=0.05): CV Macro-F1 = 0.6157, CV Acc = 61.61%",
+        "rank_3": "Exp_07 (Combined Word+Char, C=0.10): CV Macro-F1 = 0.6093, CV Acc = 60.96%",
+        "baseline": "Exp_01 (Production Baseline, C=0.15): CV Macro-F1 = 0.6083, CV Acc = 60.86%"
+      },
+      "selection_deviation_explanation": "Under a strict single-metric argmax on CV Macro-F1 alone, Exp_02 (Word-Only, C=0.15) was the top performer (0.6166). However, the candidate frozen for primary test-set comparison was Exp_06 (Combined, C=0.05, 0.6157) because the experimenter applied composite criteria: Exp_06 achieved the highest held-out validation ROC-AUC (0.6685 vs 0.6571), the lowest Brier calibration loss (0.2322 vs 0.2347), and maintained character n-gram features for sub-word stylometry. This selection rule was composite rather than a strict single-metric argmax.",
+      "test_set_isolation": "The final test set was strictly locked and was NOT used to select, tune, or adjust any candidate model."
+    }
+  },
+  "production_baseline": {
+    "model_architecture": "Combined Word(1-2)+Char(3-5) TF-IDF + LinearSVC(C=0.15) + Platt Sigmoid",
+    "accuracy": 0.6255,
+    "balanced_accuracy": 0.6255,
+    "macro_f1": 0.6254,
+    "roc_auc": 0.6626,
+    "brier_score_loss": 0.2308,
+    "class_0_truthful": {
+      "precision": 0.6178,
+      "recall": 0.6205,
+      "f1": 0.6192
+    },
+    "class_1_deceptive": {
+      "precision": 0.6331,
+      "recall": 0.6304,
+      "f1": 0.6317
+    },
+    "confusion_matrix": [
+      [
+        417,
+        255
+      ],
+      [
+        258,
+        440
+      ]
+    ]
+  },
+  "candidate_c005_combined": {
+    "model_architecture": "Combined Word(1-2)+Char(3-5) TF-IDF + LinearSVC(C=0.05) + Platt Sigmoid",
+    "accuracy": 0.6212,
+    "balanced_accuracy": 0.6211,
+    "macro_f1": 0.6211,
+    "roc_auc": 0.6626,
+    "brier_score_loss": 0.2306,
+    "class_0_truthful": {
+      "precision": 0.6127,
+      "recall": 0.619,
+      "f1": 0.6158
+    },
+    "class_1_deceptive": {
+      "precision": 0.6295,
+      "recall": 0.6232,
+      "f1": 0.6263
+    },
+    "confusion_matrix": [
+      [
+        416,
+        256
+      ],
+      [
+        263,
+        435
+      ]
+    ],
+    "delta_vs_baseline": {
+      "accuracy_delta": -0.0044,
+      "macro_f1_delta": -0.0043,
+      "roc_auc_delta": 0.0,
+      "brier_score_loss_delta": -0.0002
+    }
+  },
+  "candidate_c015_word_only": {
+    "model_architecture": "Word(1-2) Only TF-IDF + LinearSVC(C=0.15) + Platt Sigmoid",
+    "accuracy": 0.6277,
+    "balanced_accuracy": 0.6276,
+    "macro_f1": 0.6276,
+    "roc_auc": 0.6592,
+    "brier_score_loss": 0.2316,
+    "class_0_truthful": {
+      "precision": 0.6209,
+      "recall": 0.6190,
+      "f1": 0.6200
+    },
+    "class_1_deceptive": {
+      "precision": 0.6343,
+      "recall": 0.6361,
+      "f1": 0.6352
+    },
+    "confusion_matrix": [
+      [
+        416,
+        256
+      ],
+      [
+        254,
+        444
+      ]
+    ],
+    "delta_vs_baseline": {
+      "accuracy_delta": 0.0022,
+      "macro_f1_delta": 0.0022,
+      "roc_auc_delta": -0.0034,
+      "brier_score_loss_delta": 0.0008
+    }
+  },
+  "production_decision": "The existing production model (62.55% test accuracy, 0.6626 ROC-AUC) is retained without replacement. The candidate models differ by only -6 and +3 correct classifications respectively across 1,370 test samples, exhibiting identical ~0.66 ROC-AUC discrimination. Replacing the production model is not empirically justified.",
+  "scientific_limitations_and_disclaimer": "Empirical observation: Linear SVM models with n-gram TF-IDF features achieve ~62% to 63% test accuracy on this personal-statement corpus under contributor-grouped evaluation. This represents the empirical behavior of linear n-gram models on this specific corpus and must NOT be interpreted as a universal, theoretical, or definitive ceiling across all possible NLP architectures or datasets. Furthermore, predictions reflect statistical resemblance to benchmark training data and do not establish whether an individual human is lying."
+}

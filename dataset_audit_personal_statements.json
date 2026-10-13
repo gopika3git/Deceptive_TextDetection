@@ -1,0 +1,42 @@
+{
+  "initial_samples": 7168,
+  "missing_text_samples": 0,
+  "missing_label_samples": 0,
+  "exact_duplicate_samples_dropped": 167,
+  "conflicting_duplicate_labels": 56,
+  "conflicting_rows_dropped": 157,
+  "near_duplicates_found": 0,
+  "clean_sample_count": 6844,
+  "class_distribution": {
+    "truthful_0": 3374,
+    "deceptive_1": 3470
+  },
+  "domain_breakdown": {
+    "personal_statement": 6844
+  },
+  "source_datasets": {
+    "perez_rosas_mihalcea_2015": 6844
+  },
+  "near_duplicate_examples": [],
+  "cross_dataset_overlap_with_hotel_corpus": 0,
+  "splits_audit": {
+    "split_strategy": "Contributor-grouped by author_id",
+    "train_size": 4795,
+    "train_authors": 357,
+    "val_size": 679,
+    "val_authors": 51,
+    "test_size": 1370,
+    "test_authors": 103,
+    "author_leakage": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "hash_leakage": {
+      "train_val": 0,
+      "train_test": 0,
+      "val_test": 0
+    },
+    "verification_status": "PASSED: Zero author and zero text-hash overlap across splits"
+  }
+}

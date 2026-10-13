@@ -1,0 +1,29 @@
+{
+  "initial_samples": 1600,
+  "missing_text_samples": 0,
+  "missing_label_samples": 0,
+  "exact_duplicate_samples_dropped": 4,
+  "conflicting_duplicate_labels": 0,
+  "near_duplicates_found": 0,
+  "clean_sample_count": 1596,
+  "class_distribution": {
+    "truthful_0": 796,
+    "deceptive_1": 800
+  },
+  "domain_breakdown": {
+    "hotel_review": 1596
+  },
+  "source_datasets": {
+    "ott_et_al_2011_2013": 1596
+  },
+  "near_duplicate_examples": [],
+  "splits_audit": {
+    "train_size": 1116,
+    "val_size": 160,
+    "test_size": 320,
+    "leakage_train_val": 0,
+    "leakage_train_test": 0,
+    "leakage_val_test": 0,
+    "verification_status": "PASSED: Zero overlap between splits"
+  }
+}

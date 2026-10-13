@@ -1,0 +1,82 @@
+{
+  "model_name": "Combined Word + Character TF-IDF Linear SVM",
+  "model_type": "LinearSVC",
+  "hyperparameters": {
+    "C": 0.15,
+    "random_state": 42
+  },
+  "feature_config": {
+    "word_vectorizer": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        2
+      ],
+      "max_features": 40000,
+      "sublinear_tf": true
+    },
+    "char_vectorizer": {
+      "analyzer": "char",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "max_features": 40000,
+      "sublinear_tf": true
+    },
+    "total_features": 80000
+  },
+  "environment": {
+    "sklearn_version": "1.9.0",
+    "pandas_version": "2.2.3",
+    "numpy_version": "2.1.1"
+  },
+  "dataset_sizes": {
+    "train_original": 1280,
+    "train_leakfree": 1279,
+    "test_original_untouched": 320,
+    "test_deduplicated": 319
+  },
+  "cross_validation_results": {
+    "best_cv_accuracy": 0.9039,
+    "best_cv_f1": 0.9037,
+    "validation_strategy": "5-Fold Stratified Cross-Validation on Training Data"
+  },
+  "test_results_untouched": {
+    "accuracy": 0.8875,
+    "precision": 0.8974358974358975,
+    "recall": 0.875,
+    "f1": 0.8860759493670886,
+    "confusion_matrix": [
+      [
+        144,
+        16
+      ],
+      [
+        20,
+        140
+      ]
+    ]
+  },
+  "test_results_deduplicated": {
+    "accuracy": 0.8871473354231975,
+    "precision": 0.8974358974358975,
+    "recall": 0.875,
+    "f1": 0.8860759493670886,
+    "confusion_matrix": [
+      [
+        143,
+        16
+      ],
+      [
+        20,
+        140
+      ]
+    ]
+  },
+  "audit_findings": {
+    "raw_text_leakage_detected": 1,
+    "leaking_review_remedied": true,
+    "data_augmentation_evaluated": "Evaluated in CV; rejected due to performance degradation compared to natural reviews."
+  }
+}

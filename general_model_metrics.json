@@ -1,0 +1,116 @@
+{
+  "models_comparison": {
+    "word_tfidf_linear_svm": {
+      "model_name": "Word-level TF-IDF (1-2 ngrams) + Linear SVM",
+      "test_accuracy": 0.9,
+      "test_precision": 0.8902,
+      "test_recall": 0.9125,
+      "test_f1": 0.9012,
+      "test_auc": 0.9503,
+      "confusion_matrix": [
+        [
+          142,
+          18
+        ],
+        [
+          14,
+          146
+        ]
+      ]
+    },
+    "char_tfidf_linear_svm": {
+      "model_name": "Character-level TF-IDF (3-5 ngrams) + Linear SVM",
+      "test_accuracy": 0.8781,
+      "test_precision": 0.8758,
+      "test_recall": 0.8812,
+      "test_f1": 0.8785,
+      "test_auc": 0.9498,
+      "confusion_matrix": [
+        [
+          140,
+          20
+        ],
+        [
+          19,
+          141
+        ]
+      ]
+    },
+    "combined_tfidf_linear_svm": {
+      "model_name": "Combined Word + Char TF-IDF + Linear SVM (Baseline)",
+      "test_accuracy": 0.9062,
+      "test_precision": 0.8963,
+      "test_recall": 0.9187,
+      "test_f1": 0.9074,
+      "test_auc": 0.9576,
+      "confusion_matrix": [
+        [
+          143,
+          17
+        ],
+        [
+          13,
+          147
+        ]
+      ]
+    },
+    "calibrated_combined_svm": {
+      "model_name": "Calibrated Combined Word+Char SVM (Platt Scaling via Sigmoid)",
+      "test_accuracy": 0.8875,
+      "test_precision": 0.878,
+      "test_recall": 0.9,
+      "test_f1": 0.8889,
+      "test_auc": 0.9555,
+      "confusion_matrix": [
+        [
+          140,
+          20
+        ],
+        [
+          16,
+          144
+        ]
+      ],
+      "brier_score_loss": 0.0792
+    }
+  },
+  "selected_model": "calibrated_combined_svm",
+  "domain_evaluation": {
+    "hotel_review": {
+      "status": "Validated (Gold Standard Split)",
+      "test_sample_count": 320,
+      "test_accuracy": 0.8875,
+      "test_f1": 0.8889
+    },
+    "product_review": {
+      "status": "Supported / Extensible pipeline (Awaiting domain ground truth)",
+      "test_sample_count": 0,
+      "test_accuracy": null,
+      "test_f1": null
+    },
+    "email_message": {
+      "status": "Supported / Extensible pipeline (Awaiting domain ground truth)",
+      "test_sample_count": 0,
+      "test_accuracy": null,
+      "test_f1": null
+    },
+    "social_comment": {
+      "status": "Supported / Extensible pipeline (Awaiting domain ground truth)",
+      "test_sample_count": 0,
+      "test_accuracy": null,
+      "test_f1": null
+    },
+    "personal_statement": {
+      "status": "Validated (Pérez-Rosas & Mihalcea 2015 Contributor-Grouped Split)",
+      "test_sample_count": 1370,
+      "test_accuracy": 0.6255,
+      "test_balanced_accuracy": 0.6255,
+      "test_precision": 0.6331,
+      "test_recall": 0.6304,
+      "test_f1": 0.6317,
+      "test_auc": 0.6626,
+      "brier_score_loss": 0.2308
+    }
+  },
+  "cross_domain_findings": "Empirical evaluation across domains demonstrates that hotel-review models yield near-chance transfer (~48.3% accuracy, 0.4957 AUC) on personal statements, proving that deception cues are domain-dependent. Dedicated in-domain models trained on personal statements achieve 62.55% accuracy on held-out contributors, and joint multi-domain training retains 85.0% accuracy on hotel reviews while attaining 62.85% accuracy on personal statements."
+}
